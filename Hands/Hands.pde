@@ -28,6 +28,7 @@ color[]       userClr = new color[]{ color(255,0,0),
                                      color(255,0,255),
                                      color(0,255,255)
                                    };
+PVector lastPosition = null;
 void setup()
 {
 //  frameRate(200);
@@ -117,10 +118,14 @@ void onTrackedHand(SimpleOpenNI curContext,int handId,PVector pos)
 {
   //println("onTrackedHand - handId: " + handId + ", pos: " + pos );
 
+  
+  ArrayList<PVector> vecList = handPathList.get(handId);
   if (doneList.contains(handId)){
+    for (int i=0; i < vecList.size(); i++) {
+      vecList.get(i).z = pos.z;
+    }
     return;
   }
-  ArrayList<PVector> vecList = handPathList.get(handId);
   if(vecList != null)
   {
     vecList.add(0,pos);
@@ -129,6 +134,8 @@ void onTrackedHand(SimpleOpenNI curContext,int handId,PVector pos)
     if (vecList.size() > 100 && PVector.dist(pos, lastPos) < 50) {
       
   doneList.add(handId);
+  vecList.add(0, lastPos);
+  lastPosition = lastPos;
     }
   }
  
