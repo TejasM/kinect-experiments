@@ -51,6 +51,7 @@ void setup()
   // enable hands + gesture generation
   //context.enableGesture();
   context.enableHand();
+  context.enableRGB();
   context.startGesture(SimpleOpenNI.GESTURE_WAVE);
   
   // set how smooth the hand capturing should be
@@ -63,7 +64,11 @@ void draw()
   context.update();
 
   image(context.depthImage(),0,0);
-    
+  
+   PImage depth = context.depthImage().copy(rectangleList[0].x, rectangleList[0].y, rectangleList[1].x - rectangleList[0].x, rectangleList[2].y - rectangleList[1].y, int dx, int dy, int dw, int dh)
+   image(depth, 0, 0)
+  
+  
   // draw the tracked hands
   if(handPathList.size() > 0)  
   {    
